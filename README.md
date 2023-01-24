@@ -58,6 +58,10 @@ g++ main.cpp -lOpenCL `pkg-config --cflags --libs opencv4`
 ./a.out [plik_wejsciowy] [plik_wyjsciowy] [rozmiar_nowego_pliku (np. 100)]
 ```
 
+# Komentarz osobisty
+![obraz](https://user-images.githubusercontent.com/67783947/214385523-95a341e2-3cbd-456c-84bf-f466d6a8860c.png)
+
+
 # Źródła 
 
 [^1]: Bilinear Interpolation Calculator https://www.omnicalculator.com/math/bilinear-interpolation
