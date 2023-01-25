@@ -10,13 +10,13 @@ __kernel void bilinear_interpolation(__read_only image2d_t input_image, __write_
 	int x1 = ceil(x_ratio * j);
 	int y1 = ceil(y_ratio * i);
 
+	double xw = (x_ratio * j) - x0;
+	double yw = (y_ratio * i) - y0;
+	
 	float4 a = read_imagef(input_image, sampler, (int2) (y0, x0));
 	float4 b = read_imagef(input_image, sampler, (int2) (y0, x1));
 	float4 c = read_imagef(input_image, sampler, (int2) (y1, x0));
 	float4 d = read_imagef(input_image, sampler, (int2) (y1, x1));
-
-	double xw = (x_ratio * j) - x0;
-	double yw = (y_ratio * i) - y0;
 
 	float4 a0 = {
 		a.x * (1 - xw) * (1 - yw),
