@@ -10,8 +10,15 @@ Proces stosowany przy skalowaniu zbiorów danych, najczęściej obrazów. Polega
 ![obraz](https://user-images.githubusercontent.com/67783947/214378363-b7889de7-4306-46a0-b8bd-8c7442ad65f6.png)
 
 
-# OpenCL [^2][^3]
-...
+# OpenCL [^3][^4]
+
+Opensourcowy framework stosowany do tworzenia oprogramowania na różnych ALU. W przeciwieństwie do CUDA nie jest ograniczony tylko do konkretnego rodzaju hardware. Raz napisany kod w OpenCL można uruchomić na niemalże każdym sprzęcie, wliczając w to GPU, CPU lub FPGA). Aktaulnie jest w posiadaniu grupy Khronos i najwyższą jego wersją jest 3.0. Natywnie kod OpenCL tworzy się za pomocą języka C, jednak Khronos wprowadził headery interpretujące polecenia na obiekty C++, co znacznie poprawiło czytelność kodu i zmniejszyło "biolerplate". 
+Istnieją również nakładki na inne języki takie jak:
+
+  1. Python - https://pypi.org/project/pyopencl/
+  2. Java - https://github.com/gpu/JOCL
+  3. C# - https://www.nuget.org/packages/OpenCL.Net
+  4. C++ - https://github.com/KhronosGroup/OpenCL-CLHPP
 
 # Omówienie kodu
 
@@ -22,7 +29,7 @@ Proces stosowany przy skalowaniu zbiorów danych, najczęściej obrazów. Polega
 ## Kernel
 
 ## Załadowanie i konwersja obrazu dla GPU
-Template project for image processing in OpenCL[^4]. Uses OpenCV to input and output files. 
+Template project for image processing in OpenCL[^5]. Uses OpenCV to input and output files. 
 Program loads image to OpenCV Mat, then maps it as RGBA to 1D array of structure:
 
 ```
@@ -55,8 +62,11 @@ g++ main.cpp -lOpenCL `pkg-config --cflags --libs opencv4`
 
 ## Wywołanie
 ```
-./a.out [plik_wejsciowy] [plik_wyjsciowy] [rozmiar_nowego_pliku (np. 100)]
+./a.out [plik_wejsciowy] [plik_wyjsciowy] [rozmiar_nowego_pliku]
 ```
+[plik_wejsciowy] - Nazwa pliku wejściowego. Np. "in.png"
+[plik_wyjsciowy] - Nazwa pliku wyjściowego. Np. "out.png"
+[rozmiar_nowego_pliku] - Miara do której będzie skalowany obraz, podany w pixelach. Np. 100 
 
 # Komentarz osobisty
 ![obraz](https://user-images.githubusercontent.com/67783947/214385523-95a341e2-3cbd-456c-84bf-f466d6a8860c.png)
@@ -65,6 +75,7 @@ g++ main.cpp -lOpenCL `pkg-config --cflags --libs opencv4`
 # Źródła 
 
 [^1]: Bilinear Interpolation Calculator https://www.omnicalculator.com/math/bilinear-interpolation
-[^2]: Khronos OpenCL Guide: https://github.com/KhronosGroup/OpenCL-Guide
-[^3]: OpenCL Programming by Example By Ravishekhar Banger, Koushik Bhattacharyya https://www.packtpub.com/product/opencl-programming-by-example/9781849692342
-[^4]: OpenCV C++ Tutorial https://www.opencv-srf.com/2017/11/load-and-display-image.html
+[^2]: Understanding Bilinear Image Resizing https://chao-ji.github.io/jekyll/update/2018/07/19/BilinearResize.html
+[^3]: Khronos OpenCL Guide: https://github.com/KhronosGroup/OpenCL-Guide
+[^4]: OpenCL Programming by Example By Ravishekhar Banger, Koushik Bhattacharyya https://www.packtpub.com/product/opencl-programming-by-example/9781849692342
+[^5]: OpenCV C++ Tutorial https://www.opencv-srf.com/2017/11/load-and-display-image.html
