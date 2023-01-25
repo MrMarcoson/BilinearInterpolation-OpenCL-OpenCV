@@ -64,9 +64,9 @@ g++ main.cpp -lOpenCL `pkg-config --cflags --libs opencv4`
 ```
 ./a.out [plik_wejsciowy] [plik_wyjsciowy] [rozmiar_nowego_pliku]
 ```
-[plik_wejsciowy] - Nazwa pliku wejściowego. Np. "in.png"
-[plik_wyjsciowy] - Nazwa pliku wyjściowego. Np. "out.png"
-[rozmiar_nowego_pliku] - Miara do której będzie skalowany obraz, podany w pixelach. Np. 100 
+- [plik_wejsciowy] - Nazwa pliku wejściowego. Np. "in.png"
+- [plik_wyjsciowy] - Nazwa pliku wyjściowego. Np. "out.png"
+- [rozmiar_nowego_pliku] - Miara do której będzie skalowany obraz, podany w pixelach. Np. 100 
 
 # Komentarz osobisty
 ![obraz](https://user-images.githubusercontent.com/67783947/214385523-95a341e2-3cbd-456c-84bf-f466d6a8860c.png)
