@@ -9,7 +9,8 @@
 
 using namespace std;
 
-void CPU(cv::Mat input_image, long int image_size, string output_file_name, float x_ratio, float y_ratio) {
+double CPU(cv::Mat input_image, long int image_size, float x_ratio, float y_ratio, string output_file_name, int test) {
+    //cout << "CPU calculation\n";
     auto start = std::chrono::high_resolution_clock::now();
 
     cv::Mat output_image(image_size, image_size, input_image.type(), cv::Scalar(255, 0, 0, 0));;
@@ -51,10 +52,13 @@ void CPU(cv::Mat input_image, long int image_size, string output_file_name, floa
         }
     }
 
-    cv::cvtColor(output_image, output_image, cv::COLOR_RGBA2BGRA);
-    cv::imwrite(output_file_name, output_image);
-
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end - start;
-    std::cout << "CPU Execution time " << elapsed_seconds.count() << "s" << std::endl;
+
+    if(test == 0) {
+        cv::cvtColor(output_image, output_image, cv::COLOR_RGBA2BGRA);
+        cv::imwrite(output_file_name, output_image);
+    }
+
+    return elapsed_seconds.count();
 }

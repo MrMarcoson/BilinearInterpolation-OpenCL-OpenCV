@@ -37,13 +37,13 @@ void setup_device(cl::Platform &platform, cl::Device &device) {
     device = all_devices[0];
 }
 
-std::vector<uchar> GPU(cv::Mat input_image, long int image_size, string output_file_name, float x_ratio, float y_ratio) {
+double GPU(cv::Mat input_image, long int image_size, float x_ratio, float y_ratio, string output_file_name, int test) {
     auto start = std::chrono::high_resolution_clock::now();
 
     cl::Platform platform;
     cl::Device device;
     setup_device(platform, device);
-    std::cout << platform.getInfo<CL_PLATFORM_NAME>() << ": " << device.getInfo<CL_DEVICE_NAME>() << "\n";
+    //std::cout << platform.getInfo<CL_PLATFORM_NAME>() << ": " << device.getInfo<CL_DEVICE_NAME>() << "\n";
 
     cl::Context context({ device });
     cl::CommandQueue queue(context, device, CL_QUEUE_PROFILING_ENABLE);
@@ -61,7 +61,6 @@ std::vector<uchar> GPU(cv::Mat input_image, long int image_size, string output_f
     cl::Kernel kernel(program, "bilinear_interpolation");
 
     std::vector<uchar> input_arr;
-
     if(input_image.isContinuous()){
         input_arr.assign(input_image.datastart, input_image.dataend);
     }
@@ -86,12 +85,14 @@ std::vector<uchar> GPU(cv::Mat input_image, long int image_size, string output_f
     std::vector<uchar> output_arr(image_size * image_size * 4);
     queue.enqueueReadImage(Output_Image, CL_TRUE, origin, output_region, 0, 0, &output_arr[0]);
     cv::Mat output_image(image_size, image_size, CV_8UC4, output_arr.data());
-    cv::cvtColor(output_image, output_image, cv::COLOR_RGBA2BGRA);
-    cv::imwrite(output_file_name, output_image);
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end - start;
-    std::cout << "GPU Execution time " << elapsed_seconds.count() << "s" << std::endl;
 
-    return output_arr;
+    if(test == 0) {
+        cv::cvtColor(output_image, output_image, cv::COLOR_RGBA2BGRA);
+        cv::imwrite(output_file_name, output_image);
+    }
+
+    return elapsed_seconds.count();
 }

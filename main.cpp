@@ -30,8 +30,7 @@
 
 using namespace std;
 
-cv::Mat load_image(string file_name)
-{
+cv::Mat load_image(string file_name) {
     cv::Mat image = cv::imread(file_name);
     if (image.empty()) {
         cout << "Image not loaded" << endl;
@@ -44,14 +43,37 @@ cv::Mat load_image(string file_name)
 int main(int argc, char **argv) {
     string input_file_name = (string)argv[1];
     string output_file_name = (string)argv[2];
-    long int image_size = atoi(argv[3]); 
+    long int image_size = atoi(argv[3]);
+    int test = atoi(argv[4]);
 
     cv::Mat input_image = load_image(input_file_name);
     float x_ratio = ((float)(input_image.size().width - 1)  / (float)(image_size - 1));
     float y_ratio = ((float)(input_image.size().height - 1)  / (float)(image_size - 1));
 
-    GPU(input_image, image_size, "gpu_" + output_file_name, x_ratio, y_ratio);
-    CPU(input_image, image_size, "cpu_" + output_file_name, x_ratio, y_ratio);
+    double GPU_time = GPU(input_image, image_size, x_ratio, y_ratio, output_file_name, test);
+    std::cout << "GPU execution time " << GPU_time << "s" << std::endl;
+
+    double CPU_time = CPU(input_image, image_size, x_ratio, y_ratio, output_file_name, test);
+    std::cout << "CPU execution time " << CPU_time << "s" << std::endl;
+
+    if(test == 1) {
+        fstream gpu_test_data;
+        gpu_test_data.open("gpu.csv", ios::out|ios::binary);
+        fstream cpu_test_data;
+        cpu_test_data.open("cpu.csv", ios::out|ios::binary);
+
+        for(int i = 100; i <= 10000; i += 100) {
+            image_size = i;
+            float x_ratio = ((float)(input_image.size().width - 1)  / (float)(image_size - 1));
+            float y_ratio = ((float)(input_image.size().height - 1)  / (float)(image_size - 1));
+
+            gpu_test_data << i << ";" << GPU(input_image, image_size, x_ratio, y_ratio, output_file_name, 1) << std::endl;
+            cpu_test_data << i << ";" << CPU(input_image, image_size, x_ratio, y_ratio, output_file_name, 1) << std::endl;
+        }
+
+        gpu_test_data.close();
+        cpu_test_data.close();
+    }
 
     return 0;
 }
