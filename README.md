@@ -221,6 +221,7 @@ Czas wykonania mierzony jest przy pomocy biblioteki *chrono* i nie zawiera on wc
 
 W trybie testu projekt tworzy pliki gpu.csv i cpu.csv zawierające czase wykonania skalowania obrazów z zakresu 100-10000, wykonywanywanego co 100 pikseli. Przy pomocy skryptu */test/plot.py* są interpretowane i konwertowane do wykresu.
 
+![obraz](https://user-images.githubusercontent.com/67783947/214837763-02b47c5e-a059-4488-a6b1-54a41465ecef.png)
 
 # Biblioteki, kompilacja i uruchamianie
 
