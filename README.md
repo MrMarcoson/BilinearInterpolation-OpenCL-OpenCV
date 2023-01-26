@@ -230,8 +230,9 @@ W finalnym punkcie czas wykonania dla CPU jest aż 81,20 razy większy niż prog
 
 ## Poprawność obrazów
 
-Obrazy wykonane przez cpu i gpu są identyczne. Można użyć narzędzia sprawdzającego zmiany w obrazach online np. https://products.groupdocs.app/comparison/compare?FolderName=0b8244d6-fd84-4c2b-9180-36429426cc98&FirstFileName=cpu_out.png&SecondFileName=gpu_out.png
+Obrazy wykonane przez cpu i gpu są identyczne. Można to sprawdzić przy pomocy narzędzia wykrywającego zmiany w obrazach online np. https://products.groupdocs.app/comparison/compare?FolderName=0b8244d6-fd84-4c2b-9180-36429426cc98&FirstFileName=cpu_out.png&SecondFileName=gpu_out.png
 
+![obraz](https://user-images.githubusercontent.com/67783947/214844250-e217cb37-d631-4a29-ac07-b3a28851f448.png)
 
 
 # Biblioteki, kompilacja i uruchamianie
