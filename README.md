@@ -219,9 +219,20 @@ Czas wykonania mierzony jest przy pomocy biblioteki *chrono* i nie zawiera on wc
 
 # Porównanie GPU i CPU
 
+## Czasy wykonania
 W trybie testu projekt tworzy pliki gpu.csv i cpu.csv zawierające czase wykonania skalowania obrazów z zakresu 100-10000, wykonywanywanego co 100 pikseli. Przy pomocy skryptu */test/plot.py* są interpretowane i konwertowane do wykresu.
 
 ![obraz](https://user-images.githubusercontent.com/67783947/214837763-02b47c5e-a059-4488-a6b1-54a41465ecef.png)
+
+Czasy wykonywania z początku są równe, bądź nawet lepsze dla CPU. Trend ten zmienia się gdy należy przeskalować obraz do formatu 300x300. Od tego czasu wykładniczo zwiększa się czas wykonania dla CPU, podczas gdy GPU oscyluje na podobnym poziomie, jednak może to być spowodowane operacjami tworzenia wektorów obrazów i zamiany ich na cv::Mat. 
+
+W finalnym punkcie czas wykonania dla CPU jest aż 81,20 razy większy niż programu na GPU.
+
+## Poprawność obrazów
+
+Obrazy wykonane przez cpu i gpu są identyczne. Można użyć narzędzia sprawdzającego zmiany w obrazach online np. https://products.groupdocs.app/comparison/compare?FolderName=0b8244d6-fd84-4c2b-9180-36429426cc98&FirstFileName=cpu_out.png&SecondFileName=gpu_out.png
+
+
 
 # Biblioteki, kompilacja i uruchamianie
 
