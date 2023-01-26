@@ -61,7 +61,7 @@ Oprócz tego znajdują się tu pliki:
 - *test/cpu.csv* - Wyniki testów dla cpu.
 - *test/gpu.csv* - Wyniki testów dla gpu.
 - *test/gpuVScpu.png* - Wykres porównania.
-- *README.md* - dokumentacja projektu.
+- *README.md*, *README.html*, *README.pdf* - dokumentacja projektu (html i pdf zostały wygenerowane z README.md).
 
 Najważniejszą częścią projektu są pliki main.cpp, GPU.cpp i bilinear_interpolation.cl, dzięki nim wywołuje się algorytm interpolacji na GPU.
 
