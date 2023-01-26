@@ -1,6 +1,10 @@
 # Interpolacja Bilinearna przy pomocy karty graficznej i frameworka OpenCL
 Marek Kasprowicz
 
+![image](https://user-images.githubusercontent.com/67783947/214853195-78096f40-2fc1-443e-bb94-80d51c481cf6.png)
+
+** Przeskalowany przez projekt obraz z 420x420 na 600x600 **
+
 # Interpolacja Bilinearna [^1][^2][^3][^4]
 
 Proces stosowany przy skalowaniu zbiorów danych, najczęściej obrazów. Polega on na wyznaczniu wartości dla nowej struktury danych w oparciu o informacje zawarte w pierwszej. Należy dla każdego nowego elementu tablicy znaleźć cztery wartości odpowiadające mu w początkowej tablicy i wyznaczyć nowe na podstawie odległości od tych punktów. 
