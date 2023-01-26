@@ -66,19 +66,19 @@ double GPU(cv::Mat input_image, long int image_size, float x_ratio, float y_rati
     }
 
     cl::ImageFormat format(CL_RGBA, CL_UNORM_INT8);
-	cl::Image2D Input_Image(context, CL_MEM_READ_ONLY, format, input_image.size().width, input_image.size().height);
-	cl::Image2D Output_Image(context, CL_MEM_WRITE_ONLY, format, image_size, image_size);
+    cl::Image2D Input_Image(context, CL_MEM_READ_ONLY, format, input_image.size().width, input_image.size().height);
+    cl::Image2D Output_Image(context, CL_MEM_WRITE_ONLY, format, image_size, image_size);
 
-	std::array<size_t, 3> origin { 0, 0, 0 };
+    std::array<size_t, 3> origin { 0, 0, 0 };
     std::array<size_t, 3> input_region { input_image.size().width, input_image.size().height, 1 };
-	std::array<size_t, 3> output_region { image_size, image_size, 1 };
+    std::array<size_t, 3> output_region { image_size, image_size, 1 };
 
-	queue.enqueueWriteImage(Input_Image, CL_TRUE, origin, input_region, 0, 0, &input_arr[0]);
+    queue.enqueueWriteImage(Input_Image, CL_TRUE, origin, input_region, 0, 0, &input_arr[0]);
 
     kernel.setArg(0, Input_Image);
-	kernel.setArg(1, Output_Image);
+    kernel.setArg(1, Output_Image);
     kernel.setArg(2, sizeof(float), &x_ratio);
-	kernel.setArg(3, sizeof(float), &y_ratio);
+    kernel.setArg(3, sizeof(float), &y_ratio);
 
     queue.enqueueNDRangeKernel(kernel, cl::NullRange, cl::NDRange(image_size, image_size), cl::NullRange, NULL);
 
