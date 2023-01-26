@@ -1,16 +1,38 @@
 # Interpolacja Bilinearna przy pomocy karty graficznej i frameworka OpenCL
 Marek Kasprowicz
 
-# Interpolacja Bilinearna [^1]
+# Interpolacja Bilinearna [^1][^2][^3][^4]
 
-Proces stosowany przy skalowaniu zbiorów danych, najczęściej obrazów. Polega on na wyznaczniu wartości dla nowej struktury danych w oparciu o informacje zawarte w pierwszej. 
+Proces stosowany przy skalowaniu zbiorów danych, najczęściej obrazów. Polega on na wyznaczniu wartości dla nowej struktury danych w oparciu o informacje zawarte w pierwszej. Należy dla każdego nowego elementu tablicy znaleźć cztery wartości odpowiadające mu w początkowej tablicy i wyznaczyć nowe na podstawie odległości od tych punktów. 
 
-![obraz](https://user-images.githubusercontent.com/67783947/214377688-c7ffba05-5f7d-4443-bfb1-53f71f2a41e7.png)
+W pierwszej kolejności należy stworzyć pusty obraz odpowiednio przeskalowany, a następnie należy wyznaczyć skalę powiększenia.
+```
+	ratio_x = input.width / output.width
+	ratio_y = input.height / output.height
+```
 
-![obraz](https://user-images.githubusercontent.com/67783947/214378363-b7889de7-4306-46a0-b8bd-8c7442ad65f6.png)
+Pozwoli to na wyznaczanie odpowiadających indeksów w drugim obrazie.
+```
+	x = x_ratio * j
+	y = y_ratio * i
+```
+
+Ponieważ wartością x i y będą zmienne zmiennoprzecinkowe, to po zastosowaniu ceil i floor w łatwy sposób wyznaczamy punkty przegowe, pomiędzy którymi znajduje się interesujący nas punkt.
+
+![obraz](https://user-images.githubusercontent.com/67783947/214845955-61923764-54e1-49ed-860c-0d679e948ac8.png)
+
+Następnie wyznacza się zmienną ciężkości, określającą drogę przebytą między dwoma bocznymi pikselami.
+```
+	xw = (x_ratio * j) - x0
+	yw = (y_ratio * i) - y0
+```
+
+Na końcu zastosowuje się dla każdego koloru piksela wyprowadzony wzór[^8] na interpolację między czterema punktami:
+
+![obraz](https://user-images.githubusercontent.com/67783947/214850321-968c41d9-be33-4512-a998-f54006c982e6.png)
 
 
-# OpenCL [^3][^4]
+# OpenCL [^5][^6]
 
 Opensourcowy framework stosowany do tworzenia oprogramowania na różnych ALU. W przeciwieństwie do CUDA nie jest ograniczony tylko do konkretnego rodzaju hardware. Raz napisany kod w OpenCL można uruchomić na niemalże każdym sprzęcie, wliczając w to GPU, CPU lub FPGA). Aktaulnie jest w posiadaniu grupy Khronos i najwyższą jego wersją jest 3.0. Natywnie kod OpenCL tworzy się za pomocą języka C, jednak Khronos wprowadził headery interpretujące polecenia na obiekty C++, co znacznie poprawiło czytelność kodu i zmniejszyło "biolerplate". 
 Istnieją również nakładki na inne języki takie jak:
@@ -158,7 +180,7 @@ Modyfikatory zmiennych pozwalają na przyspieszenie obliczeń, gdyż urządzenie
 
 
 ## Załadowanie i konwersja obrazu dla GPU
-Projekt stosuje OpenCV[^5] do pracy na obrazach. Aby obiekt cv::Mat mógł być zrozumiany przez GPU musi on być zmapowany do wektora o wielkości **height * width * 4**. 
+Projekt stosuje OpenCV[^7] do pracy na obrazach. Aby obiekt cv::Mat mógł być zrozumiany przez GPU musi on być zmapowany do wektora o wielkości **height * width * 4**. 
 
 ```
   Piksele w obrazie 2d:   [0, 0]      [0, 1]          [n, n]
@@ -226,7 +248,7 @@ W trybie testu projekt tworzy pliki gpu.csv i cpu.csv zawierające czase wykonan
 
 Czasy wykonywania z początku są równe, bądź nawet lepsze dla CPU. Trend ten zmienia się gdy należy przeskalować obraz do formatu 300x300. Od tego czasu wykładniczo zwiększa się czas wykonania dla CPU, podczas gdy GPU oscyluje na podobnym poziomie, jednak może to być spowodowane operacjami tworzenia wektorów obrazów i zamiany ich na cv::Mat. 
 
-W finalnym punkcie czas wykonania dla CPU jest aż 81,20 razy większy niż programu na GPU.
+W finalnym punkcie czas wykonania dla CPU jest aż *81,20* razy większy niż programu na GPU.
 
 ## Poprawność obrazów
 
@@ -283,8 +305,11 @@ Praca z biblioteką OpenCL była bardzo trudna. Istniejące materiały są przes
 
 # Źródła 
 
-[^1]: Bilinear Interpolation Calculator https://www.omnicalculator.com/math/bilinear-interpolation
-[^2]: Understanding Bilinear Image Resizing https://chao-ji.github.io/jekyll/update/2018/07/19/BilinearResize.html
-[^3]: Khronos OpenCL Guide: https://github.com/KhronosGroup/OpenCL-Guide
-[^4]: OpenCL Programming by Example By Ravishekhar Banger, Koushik Bhattacharyya https://www.packtpub.com/product/opencl-programming-by-example/9781849692342
-[^5]: OpenCV C++ Tutorial https://www.opencv-srf.com/2017/11/load-and-display-image.html
+[^1]: Bilinear Interpolation Calculator: https://www.omnicalculator.com/math/bilinear-interpolation
+[^2]: Zmiana wielkości obrazu - Interpolacja dwuliniowa: http://www.algorytm.org/przetwarzanie-obrazow/zmiana-wielkosci-obrazu-interpolacja-dwuliniowa.html
+[^3]: The AI Learner Bilinear Interpolation: https://theailearner.com/2018/12/29/image-processing-bilinear-interpolation/
+[^4]: Understanding Bilinear Image Resizing: https://chao-ji.github.io/jekyll/update/2018/07/19/BilinearResize.html
+[^5]: Khronos OpenCL Guide: https://github.com/KhronosGroup/OpenCL-Guide
+[^6]: OpenCL Programming by Example By Ravishekhar Banger, Koushik Bhattacharyya: https://www.packtpub.com/product/opencl-programming-by-example/9781849692342
+[^7]: OpenCV C++ Tutorial: https://www.opencv-srf.com/2017/11/load-and-display-image.html
+[^8]: Interpolacja dwuliniowa: https://pl.wikipedia.org/wiki/Interpolacja_dwuliniowa
