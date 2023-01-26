@@ -3,7 +3,7 @@ Marek Kasprowicz
 
 ![image](https://user-images.githubusercontent.com/67783947/214853195-78096f40-2fc1-443e-bb94-80d51c481cf6.png)
 
-*Przeskalowany przez projekt obraz z 420x420 na 600x600*
+*Przeskalowany obraz z 420x420 na 600x600 przy pomocy karty graficznej i frameworka OpenCL*
 
 # Interpolacja Bilinearna [^1][^2][^3][^4]
 
